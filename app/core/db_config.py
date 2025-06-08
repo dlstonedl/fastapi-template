@@ -5,21 +5,22 @@ load_dotenv()
 
 TORTOISE_ORM = {
     "connections": {
-        "default": os.getenv("DB_URL")
-        # "engine": "tortoise.backends.asyncmy",
-        # "credentials": {
-        #     "host": "127.0.0.1",
-        #     "port": 3306,
-        #     "user": "root",
-        #     "password": "123456",
-        #     "database": "fastapi",
-        #     "charset": "utf8mb4",
-        #     # 连接池配置
-        #     "minsize": 5,
-        #     "maxsize": 10,
-        #     "connect_timeout": 10,
-        #     "init_command": "SET time_zone = '+08:00'",  # 可选初始化命令
-        # }
+        "default": {
+            "engine": "tortoise.backends.mysql",
+            "credentials": {
+                "host": os.getenv("DB_HOST"),
+                "port": int(os.getenv("DB_PORT")),
+                "user": os.getenv("DB_USER"),
+                "password": os.getenv("DB_PASSWORD"),
+                "database": os.getenv("DB_NAME"),
+                "charset": "utf8mb4",
+                # 连接池配置
+                "minsize": int(os.getenv("DB_MIN_SIZE")),
+                "maxsize": int(os.getenv("DB_MAX_SIZE")),
+                "connect_timeout": int(os.getenv("DB_CONNECT_TIMEOUT")),
+                "init_command": "SET time_zone = '+08:00'",
+            }
+        }
     },
     "apps": {
         "models": {
