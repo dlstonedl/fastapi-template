@@ -45,8 +45,6 @@ poetry run aerich upgrade
 ```
 
 ### 代办事项
-- Tortoise数据库连接池配置
-- 数据库事务配置
 - 远程Rest调用
 - 权限校验（类似ThreadLocal）
 - 统一异常处理
