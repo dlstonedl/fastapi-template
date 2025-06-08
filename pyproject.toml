@@ -13,13 +13,13 @@ name = "dlstone"
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry]
+package-mode = false
+
 [tool.poetry.group.dev.dependencies]
 tomlkit = "^0.13.3"
 
 [tool.aerich]
 tortoise_orm = "app.core.db_config.TORTOISE_ORM"
-location = "./resources/migrations"
+location = "./migrations"
 src_folder = "./."
-
-[tool.poetry]
-package-mode = false
