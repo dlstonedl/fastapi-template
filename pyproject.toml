@@ -1,0 +1,22 @@
+[project]
+name = "fastapi-template"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = ["fastapi (>=0.115.12,<0.116.0)", "uvicorn (>=0.34.3,<0.35.0)", "tortoise-orm (>=0.25.1,<0.26.0)", "httpx (>=0.28.1,<0.29.0)", "aerich (>=0.9.0,<0.10.0)", "python-dotenv (>=1.1.0,<2.0.0)", "fastapi-pagination (>=0.13.2,<0.14.0)", "asyncmy (>=0.2.10,<0.3.0)"]
+
+[[project.authors]]
+name = "dlstone"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+tomlkit = "^0.13.3"
+
+[tool.aerich]
+tortoise_orm = "app.core.db_config.TORTOISE_ORM"
+location = "./resources/migrations"
+src_folder = "./."
