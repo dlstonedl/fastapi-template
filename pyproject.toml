@@ -20,3 +20,6 @@ tomlkit = "^0.13.3"
 tortoise_orm = "app.core.db_config.TORTOISE_ORM"
 location = "./resources/migrations"
 src_folder = "./."
+
+[tool.poetry]
+package-mode = false

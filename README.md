@@ -27,6 +27,9 @@ pyproject.toml -> poetry.lock -> 虚拟环境
 brew install poetry，缺少poetry-core
 curl -sSL https://install.python-poetry.org | python3 -
 配置PATH路径
+
+下载新项目
+poetry install
 ```
 
 ### 迁移工具：aerich
