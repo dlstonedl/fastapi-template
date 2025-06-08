@@ -3,8 +3,9 @@ from fastapi_pagination.ext.tortoise import apaginate
 
 from app.models.user import User
 from app.schemas.user import UserIn, UserQueryParam
+from tortoise import transactions
 
-
+@transactions.atomic()
 async def create_user(user_in: UserIn) -> User:
     return await User.create(**user_in.model_dump())
 
@@ -31,9 +32,18 @@ async def find_user(user_query: UserQueryParam, pagination: Params) -> Page[User
     return await apaginate(query, pagination)
 
 async def update_user(user_id: int, user_in: UserIn) -> User | None:
-    await User.filter(id=user_id).update(**user_in.model_dump(exclude_unset=True))
-    return await User.get_or_none(id=user_id)
+    # 使用in_transaction()实现事务
+    async with transactions.in_transaction():
+        try:
+            await User.filter(id=user_id).update(**user_in.model_dump(exclude_unset=True))
+            return await User.get_or_none(id=user_id)
+            # 事务会自动提交（无异常时）
+        except Exception as e:
+            # 发生异常时自动回滚
+            print("Transaction failed:", e)
+            raise
 
+# 使用atomic()装饰器实现事务
+@transactions.atomic()
 async def delete_user(user_id: int) -> None:
     await User.filter(id=user_id).delete()
-
