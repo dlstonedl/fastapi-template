@@ -1,12 +1,20 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 import uvicorn
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.adapter.controller.rest_user_controller import rest_user_router
+from app.infrastructure.common.httpx_client_singleton import HttpxClientSingleton
 from app.infrastructure.common.tortoise_orm_config import TORTOISE_ORM
 from app.adapter.controller.user_controller import user_router
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    HttpxClientSingleton.get_client()
+    yield
+    await HttpxClientSingleton.close()
+app = FastAPI(lifespan=lifespan)
 
 register_tortoise(app,
                   config=TORTOISE_ORM,
