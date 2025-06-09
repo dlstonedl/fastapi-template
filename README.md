@@ -45,7 +45,6 @@ poetry run aerich upgrade
 ```
 
 ### 代办事项
-- 权限校验（类似ThreadLocal）
 - 统一异常处理
 - 数据库时区
 - 缓存使用
