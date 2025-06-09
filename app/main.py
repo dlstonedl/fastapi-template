@@ -3,7 +3,7 @@ import uvicorn
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.web.controller.rest_user_controller import rest_user_router
-from app.core.db_config import TORTOISE_ORM
+from app.infrastructure.core.db_config import TORTOISE_ORM
 from app.web.controller.user_controller import user_router
 
 app = FastAPI()

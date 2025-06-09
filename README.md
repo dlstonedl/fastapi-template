@@ -52,6 +52,7 @@ poetry run aerich upgrade
 - 多数据源
 - DockerFile
 - 补充测试
+- 重命名不会批量改
 
 
 

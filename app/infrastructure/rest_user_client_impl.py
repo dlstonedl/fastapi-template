@@ -3,7 +3,7 @@ from typing import Optional
 import httpx
 from pydantic import ValidationError
 
-from app.core.rest_user_config import RestUserConfig
+from app.infrastructure.core.rest_user_config import RestUserConfig
 from app.domain.UserEntity import UserEntity
 from app.domain.rest_user_client import RestUserClient
 

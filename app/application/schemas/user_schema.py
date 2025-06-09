@@ -2,13 +2,12 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-
-class UserIn(BaseModel):
+class UserCommand(BaseModel):
     username: str
     sex: str
     age: int
 
-class UserOut(BaseModel):
+class UserResponse(BaseModel):
     id: int
     username: str
     sex: str
@@ -17,7 +16,7 @@ class UserOut(BaseModel):
     class Config:
         from_attributes = True
 
-class UserQueryParam(BaseModel):
+class UserQuery(BaseModel):
     username: Optional[str] = Field(None, description="姓名模糊查询")
     sex: Optional[str] = Field(None, description="性别精确查询")
     age_min: Optional[int] = Field(None, ge=0, description="最小年龄")
