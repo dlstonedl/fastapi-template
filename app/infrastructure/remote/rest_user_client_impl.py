@@ -3,13 +3,13 @@ from typing import Optional
 import httpx
 from pydantic import ValidationError
 
-from app.infrastructure.core.rest_user_config import RestUserConfig
-from app.domain.UserEntity import UserEntity
-from app.domain.rest_user_client import RestUserClient
+from app.infrastructure.common.remote_url_config import RemoteUrlConfig
+from app.domain.entity.UserEntity import UserEntity
+from app.domain.remote.rest_user_client import RestUserClient
 
 class RestUserClientImpl(RestUserClient):
     def __init__(self):
-        rest_user_config = RestUserConfig()
+        rest_user_config = RemoteUrlConfig()
         self._client = httpx.AsyncClient(base_url=rest_user_config.rest_user_base_url)
 
     def _build_url(self, path: str, **kwargs) -> str:

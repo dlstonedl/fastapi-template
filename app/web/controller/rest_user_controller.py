@@ -1,9 +1,9 @@
 
 from fastapi import APIRouter, Depends
 
-from app.domain.rest_user_client import RestUserClient
-from app.infrastructure.rest_user_client_impl import RestUserClientImpl
+from app.domain.remote.rest_user_client import RestUserClient
 from app.application.schemas.user_schema import UserResponse
+from app.infrastructure.remote.rest_user_client_impl import RestUserClientImpl
 
 rest_user_router = APIRouter()
 

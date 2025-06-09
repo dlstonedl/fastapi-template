@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from app.domain.UserEntity import UserEntity
+from app.domain.entity.UserEntity import UserEntity
 
 class RestUserClient(ABC):
 
