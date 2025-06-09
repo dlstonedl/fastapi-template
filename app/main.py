@@ -5,6 +5,7 @@ import uvicorn
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.adapter.controller.rest_user_controller import rest_user_router
+from app.adapter.middleware.auth_middleware import AuthMiddleware
 from app.infrastructure.common.httpx_client_singleton import HttpxClientSingleton
 from app.infrastructure.common.tortoise_orm_config import TORTOISE_ORM
 from app.adapter.controller.user_controller import user_router
@@ -23,6 +24,8 @@ register_tortoise(app,
 
 app.include_router(user_router, prefix="/users", tags=["用户"])
 app.include_router(rest_user_router, prefix="/rest-users", tags=["远程用户"])
+
+app.add_middleware(AuthMiddleware)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
