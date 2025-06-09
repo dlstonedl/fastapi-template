@@ -2,27 +2,27 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi_pagination import Page, Params, add_pagination
 
-from app.schemas.user import UserIn, UserOut, UserQueryParam
-from app.db.user_dao import create_user, read_user, update_user, delete_user, find_user
+from app.application.schemas.user_schema import UserCommand, UserResponse, UserQuery
+from app.infrastructure.db.user_dao import create_user, read_user, update_user, delete_user, find_user
 
 user_router = APIRouter()
 
-@user_router.post("", response_model=UserOut)
-async def create(user_in: UserIn):
+@user_router.post("", response_model=UserResponse)
+async def create(user_in: UserCommand):
     return await create_user(user_in)
 
-@user_router.get("/{user_id}", response_model=UserOut)
+@user_router.get("/{user_id}", response_model=UserResponse)
 async def read(user_id: int):
     if user := await read_user(user_id):
         return user
     raise HTTPException(status_code=404, detail="User not found")
 
-@user_router.get("", response_model=Page[UserOut])
-async def find(user_query: UserQueryParam = Depends(), pagination: Params = Depends()):
+@user_router.get("", response_model=Page[UserResponse])
+async def find(user_query: UserQuery = Depends(), pagination: Params = Depends()):
     return await find_user(user_query, pagination)
 
-@user_router.put("/{user_id}", response_model=UserOut)
-async def update(user_id: int, user_in: UserIn):
+@user_router.put("/{user_id}", response_model=UserResponse)
+async def update(user_id: int, user_in: UserCommand):
     if user := await update_user(user_id, user_in):
         return user
     raise HTTPException(status_code=404, detail="User not found")

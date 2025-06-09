@@ -1,19 +1,19 @@
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.tortoise import apaginate
 
-from app.models.user import User
-from app.schemas.user import UserIn, UserQueryParam
+from app.application.schemas.user_schema import UserCommand, UserQuery
+from app.infrastructure.models.user import User
 from tortoise import transactions
 
 @transactions.atomic()
-async def create_user(user_in: UserIn) -> User:
+async def create_user(user_in: UserCommand) -> User:
     return await User.create(**user_in.model_dump())
 
 async def read_user(user_id: int) -> User | None:
     return await User.get_or_none(id=user_id)
 
 
-async def find_user(user_query: UserQueryParam, pagination: Params) -> Page[User]:
+async def find_user(user_query: UserQuery, pagination: Params) -> Page[User]:
     query = User.all()
     if user_query.username:
         query = query.filter(username__icontains=user_query.username)
@@ -31,7 +31,7 @@ async def find_user(user_query: UserQueryParam, pagination: Params) -> Page[User
 
     return await apaginate(query, pagination)
 
-async def update_user(user_id: int, user_in: UserIn) -> User | None:
+async def update_user(user_id: int, user_in: UserCommand) -> User | None:
     # 使用in_transaction()实现事务
     async with transactions.in_transaction():
         try:
