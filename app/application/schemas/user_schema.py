@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-class UserCommand(BaseModel):
+class UserUpsetCommand(BaseModel):
     username: str
     sex: str
     age: int
