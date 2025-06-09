@@ -8,8 +8,10 @@ from app.infrastructure.persistence.repository.user_repository_impl import UserR
 
 user_router = APIRouter()
 
-def get_user_repository():
-    return UserRepositoryImpl()
+repository_singleton = UserRepositoryImpl()
+
+async def get_user_repository():
+    return repository_singleton
 
 @user_router.post("", response_model=UserResponse)
 async def create(user_upset_command: UserUpsetCommand, user_repository: UserRepository = Depends(get_user_repository)):
