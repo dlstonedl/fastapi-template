@@ -3,6 +3,7 @@ import uvicorn
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.api.users import user_router
+from app.api.users_rest import rest_user_router
 from app.core.db_config import TORTOISE_ORM
 
 app = FastAPI()
@@ -13,6 +14,7 @@ register_tortoise(app,
                   add_exception_handlers=True)
 
 app.include_router(user_router, prefix="/users", tags=["用户"])
+app.include_router(rest_user_router, prefix="/rest-users", tags=["远程用户"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
