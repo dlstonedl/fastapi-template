@@ -8,7 +8,7 @@ async def auth_middleware(request: Request, call_next: RequestResponseEndpoint) 
     # 示例：从 Header 中提取 token
     token = request.headers.get("Authorization")
     if not token:
-        return JSONResponse(status_code=401, content={"detail": "Unauthorized"})
+        return await call_next(request)
 
     # 简化：假设 token 是 user_id:username 的格式
     token_context = None

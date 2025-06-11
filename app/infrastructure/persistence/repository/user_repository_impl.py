@@ -20,6 +20,8 @@ class UserRepositoryImpl(UserRepository):
 
     async def read(self, user_id: int) -> UserEntity | None:
         user_model = await UserModel.get_or_none(id=user_id)
+        if user_model is None:
+            return None
         user_schema = await UserSchema.from_tortoise_orm(user_model)
         return UserEntity(**user_schema.model_dump())
 

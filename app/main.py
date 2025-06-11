@@ -2,20 +2,23 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 import uvicorn
+from fastapi.routing import APIRoute
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.adapter.controller.rest_user_controller import rest_user_router
+from app.adapter.controller import rest_user_controller, user_controller
 from app.adapter.middleware.auth_middleware import auth_middleware
 from app.infrastructure.common.httpx_client_singleton import HttpxClientSingleton
 from app.infrastructure.common.tortoise_orm_config import TORTOISE_ORM
-from app.adapter.controller.user_controller import user_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     HttpxClientSingleton.get_client()
     yield
     await HttpxClientSingleton.close()
-app = FastAPI(lifespan=lifespan)
+
+def custom_generate_unique_id(route: APIRoute) -> str:
+    return f"{route.tags[0]}-{route.name}"
+app = FastAPI(lifespan=lifespan, generate_unique_id_function=custom_generate_unique_id)
 
 register_tortoise(app,
                   config=TORTOISE_ORM,
@@ -23,8 +26,8 @@ register_tortoise(app,
                   add_exception_handlers=True)
 
 # 路由
-app.include_router(user_router, prefix="/users", tags=["用户"])
-app.include_router(rest_user_router, prefix="/rest-users", tags=["远程用户"])
+app.include_router(user_controller.router)
+app.include_router(rest_user_controller.router)
 
 # 中间件
 app.middleware("http")(auth_middleware)
