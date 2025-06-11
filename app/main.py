@@ -1,6 +1,11 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+
+from dotenv import load_dotenv
+# 加载.env环境变量，只需要在这里调用一次
+load_dotenv()
+
 import uvicorn
 from fastapi.routing import APIRoute
 from tortoise.contrib.fastapi import register_tortoise

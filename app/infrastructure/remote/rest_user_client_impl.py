@@ -10,7 +10,7 @@ from app.domain.remote.rest_user_client import RestUserClient
 class RestUserClientImpl(RestUserClient):
     def __init__(self):
         rest_user_config = RemoteUrlConfig()
-        self._base_url = rest_user_config.rest_user_base_url
+        self._base_url = rest_user_config.REST_USER_BASE_URL
         self._client = HttpxClientSingleton.get_client()
 
     def _build_url(self, path: str, **kwargs) -> str:
