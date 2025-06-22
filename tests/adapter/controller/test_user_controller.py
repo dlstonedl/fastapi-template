@@ -1,0 +1,38 @@
+import pytest
+from unittest.mock import AsyncMock
+from fastapi import FastAPI
+from starlette.testclient import TestClient
+
+from app.adapter.controller.user_controller import router, get_user_repository
+from app.application.schemas.user_schema import UserResponse
+
+@pytest.fixture
+def mock_repo():
+    repo = AsyncMock()
+    return repo
+
+@pytest.fixture
+def client(mock_repo):
+    app = FastAPI()
+    app.include_router(router)
+
+    async def override_get_user_repository():
+        return mock_repo
+
+    app.dependency_overrides[get_user_repository] = override_get_user_repository
+
+    return TestClient(app)
+
+
+def test_create_user(client, mock_repo):
+    # given
+    user_data = {"username": "test", "sex": "male", "age": 30}
+    expected_response = {"id": 1, "username": "test", "sex": "male", "age": 30}
+    mock_repo.create.return_value = UserResponse(**expected_response)
+
+    # when
+    response = client.post("/users", json=user_data)
+
+    # then
+    assert response.status_code == 200
+    assert response.json() == expected_response

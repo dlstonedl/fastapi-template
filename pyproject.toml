@@ -18,6 +18,10 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 tomlkit = "^0.13.3"
+pytest = "^8.4.0"
+tortoise-orm = {extras = ["testing"], version = "^0.25.1"}
+pytest-asyncio = "^1.0.0"
+aiosqlite = "^0.21.0"
 
 [tool.aerich]
 tortoise_orm = "app.infrastructure.common.tortoise_orm_config.TORTOISE_ORM"
