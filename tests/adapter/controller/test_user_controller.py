@@ -4,6 +4,8 @@ from starlette.testclient import TestClient
 from tortoise import Tortoise
 
 from app.adapter.controller.user_controller import router
+from app.infrastructure.persistence.models.user_model import UserModel
+
 
 @pytest.fixture(scope="session", autouse=True)
 def init_tortoise():
@@ -43,3 +45,17 @@ def test_create_user(client):
     assert data["username"] == "test"
     assert data["sex"] == "male"
     assert data["age"] == 30
+
+
+def test_read_user(client):
+    # given
+    expected_response = {"id": 3, "username": "test", "sex": "male", "age": 30}
+    import asyncio
+    asyncio.run(UserModel.create(**expected_response))
+
+    # when
+    response = client.get("/users/3")
+
+    # then
+    assert response.status_code == 200
+    assert response.json() == expected_response
