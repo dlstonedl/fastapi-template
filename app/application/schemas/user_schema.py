@@ -13,7 +13,7 @@ class UserResponse(BaseModel):
     sex: str
     age: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class UserQuery(BaseModel):
