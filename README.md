@@ -44,5 +44,9 @@ poetry run aerich migrate --name "add_user_model"
 poetry run aerich upgrade
 ```
 
+### 测试
+```
+poetry run pytest tests
+```
 
 
