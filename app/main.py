@@ -22,9 +22,7 @@ async def lifespan(app: FastAPI):
     yield
     await HttpxClientSingleton.close()
 
-def custom_generate_unique_id(route: APIRoute) -> str:
-    return f"{route.tags[0]}-{route.name}"
-app = FastAPI(lifespan=lifespan, generate_unique_id_function=custom_generate_unique_id)
+app = FastAPI(lifespan=lifespan)
 
 register_tortoise(app,
                   config=TORTOISE_ORM,
