@@ -1,3 +1,4 @@
+from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Depends, Path, Body
 from fastapi_pagination import Page, Params, add_pagination
@@ -18,16 +19,16 @@ async def create(user_upset_command: UserUpsetCommand, user_repository: UserRepo
     return await user_repository.create(user_upset_command)
 
 @router.get("/{user_id}", response_model=UserResponse)
-async def read(user_id: int = Path(..., description="用户ID"),
-               user_repository: UserRepository = Depends(get_user_repository)):
+async def read(user_id: Annotated[int, Path(description="用户ID")],
+               user_repository: Annotated[UserRepository, Depends(get_user_repository)]):
     if user := await user_repository.read(user_id):
         return user
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.get("", response_model=Page[UserResponse])
-async def find(user_query: UserQuery = Depends(),
-               pagination: Params = Depends(),
-               user_repository: UserRepository = Depends(get_user_repository)):
+async def find(user_query: Annotated[UserQuery, Depends()],
+               pagination: Annotated[Params, Depends()],
+               user_repository: Annotated[UserRepository, Depends(get_user_repository)]):
     return await user_repository.find(user_query, pagination)
 
 @router.put("/{user_id}", response_model=UserResponse)
