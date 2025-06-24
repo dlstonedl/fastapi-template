@@ -18,9 +18,13 @@ from app.infrastructure.common.tortoise_orm_config import TORTOISE_ORM
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    HttpxClientSingleton.get_client()
-    yield
-    await HttpxClientSingleton.close()
+    try:
+        # 在应用启动时获取httpx客户端
+        HttpxClientSingleton.get_client()
+        yield
+    finally:
+        # 在应用关闭时关闭httpx客户端
+        await HttpxClientSingleton.close()
 
 
 app = FastAPI(lifespan=lifespan)
