@@ -1,14 +1,13 @@
 from contextlib import asynccontextmanager
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from dotenv import load_dotenv
 # 加载.env环境变量，只需要在这里调用一次
 load_dotenv('.env')
 load_dotenv('.env.local', override=True)
 
 import uvicorn
-from fastapi.routing import APIRoute
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.adapter.controller import rest_user_controller, user_controller
@@ -16,11 +15,13 @@ from app.adapter.middleware.auth_middleware import auth_middleware
 from app.infrastructure.common.httpx_client_singleton import HttpxClientSingleton
 from app.infrastructure.common.tortoise_orm_config import TORTOISE_ORM
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     HttpxClientSingleton.get_client()
     yield
     await HttpxClientSingleton.close()
+
 
 app = FastAPI(lifespan=lifespan)
 
