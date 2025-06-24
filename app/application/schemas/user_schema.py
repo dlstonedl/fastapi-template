@@ -1,20 +1,20 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+
 
 class UserUpsetCommand(BaseModel):
-    username: str
-    sex: str
-    age: int
+    username: str = Field(..., description="用户名")
+    sex: str = Field(..., description="性别")
+    age: int = Field(..., ge=0, description="年龄")
 
 class UserResponse(BaseModel):
-    id: int
-    username: str
-    sex: str
-    age: int
+    id: int = Field(..., description="用户ID")
+    username: str = Field(..., description="用户名")
+    sex: str = Field(..., description="性别")
+    age: int  = Field(..., description="年龄")
 
-    class ConfigDict:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserQuery(BaseModel):
     username: Optional[str] = Field(None, description="姓名模糊查询")
