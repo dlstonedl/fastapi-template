@@ -21,7 +21,6 @@ TORTOISE_ORM = {
                 "minsize": int(os.getenv("DB_MIN_SIZE")),
                 "maxsize": int(os.getenv("DB_MAX_SIZE")),
                 "connect_timeout": int(os.getenv("DB_CONNECT_TIMEOUT")),
-                "init_command": "SET time_zone = '+08:00'",
             }
         }
     },
@@ -30,5 +29,7 @@ TORTOISE_ORM = {
             "models": os.getenv("DB_MODELS").split(","),
             "default_connection": "default"
         }
-    }
+    },
+    'use_tz': False,
+    'timezone': "Asia/Shanghai"
 }
