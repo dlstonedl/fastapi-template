@@ -36,7 +36,7 @@ def test_create_user(client, mock_repo):
 
     # then
     assert response.status_code == 200
-    assert response.json() == expected_response
+    assert response.json()['data'] == expected_response
 
 def test_read_user(client, mock_repo):
     # given
@@ -48,7 +48,7 @@ def test_read_user(client, mock_repo):
 
     # then
     assert response.status_code == 200
-    assert response.json() == expected_response
+    assert response.json()['data'] == expected_response
 
 
 

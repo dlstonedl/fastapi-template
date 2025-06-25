@@ -41,7 +41,7 @@ def test_create_user(client):
 
     # then
     assert response.status_code == 200
-    data = response.json()
+    data = response.json()['data']
     assert data["username"] == "test"
     assert data["gender"] == "MALE"
     assert data["age"] == 30
@@ -58,7 +58,7 @@ def test_read_user(client):
 
     # then
     assert response.status_code == 200
-    data = response.json()
+    data = response.json()['data']
     assert data["username"] == "test"
     assert data["gender"] == "MALE"
     assert data["age"] == 30
