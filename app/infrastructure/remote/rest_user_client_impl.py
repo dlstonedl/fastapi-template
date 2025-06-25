@@ -4,7 +4,7 @@ from pydantic import ValidationError
 
 from app.infrastructure.common.httpx_client_singleton import HttpxClientSingleton
 from app.infrastructure.common.remote_url_config import RemoteUrlConfig
-from app.domain.entity.UserEntity import UserEntity
+from app.domain.entity.user_entity import UserEntity
 from app.domain.remote.rest_user_client import RestUserClient
 
 class RestUserClientImpl(RestUserClient):

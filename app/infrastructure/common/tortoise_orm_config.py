@@ -1,5 +1,11 @@
 import os
 
+from dotenv import load_dotenv
+
+# 加载.env环境变量，只需要在这里调用一次
+load_dotenv('.env')
+load_dotenv('.env.local', override=True)
+
 TORTOISE_ORM = {
     "connections": {
         "default": {

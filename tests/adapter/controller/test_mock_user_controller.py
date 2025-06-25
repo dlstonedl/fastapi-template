@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from starlette.testclient import TestClient
 
 from app.adapter.controller.user_controller import router, get_user_repository
-from app.domain.entity.UserEntity import UserEntity
+from app.domain.entity.user_entity import UserEntity
 
 
 @pytest.fixture

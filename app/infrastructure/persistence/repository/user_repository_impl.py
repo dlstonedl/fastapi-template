@@ -1,37 +1,33 @@
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.tortoise import apaginate
-from tortoise.contrib.pydantic import pydantic_model_creator
-
-from app.application.schemas.user_schema import UserUpsetCommand, UserQuery, UserResponse
-from app.domain.entity.UserEntity import UserEntity
-from app.domain.repository.user_repository import UserRepository
-from app.infrastructure.persistence.models.user_model import UserModel
 from tortoise import transactions
 
-UserSchema = pydantic_model_creator(UserModel)
+from app.application.schemas.user_schema import UserUpsetCommand, UserQuery
+from app.domain.entity.user_entity import UserEntity
+from app.domain.repository.user_repository import UserRepository
+from app.infrastructure.persistence.models.user_model import UserModel
+
 
 class UserRepositoryImpl(UserRepository):
 
     @transactions.atomic()
     async def create(self, user_upset_command: UserUpsetCommand) -> UserEntity:
         user_model = await UserModel.create(**user_upset_command.model_dump())
-        user_schema = await UserSchema.from_tortoise_orm(user_model)
-        return UserEntity(**user_schema.model_dump())
+        return UserEntity(**user_model.model_to_dict())
 
     async def read(self, user_id: int) -> UserEntity | None:
         user_model = await UserModel.get_or_none(id=user_id)
         if user_model is None:
             return None
-        user_schema = await UserSchema.from_tortoise_orm(user_model)
-        return UserEntity(**user_schema.model_dump())
+        return UserEntity(**user_model.model_to_dict())
 
     async def find(self, user_query: UserQuery, pagination: Params) -> Page[UserEntity]:
         query = UserModel.all()
         if user_query.username:
             query = query.filter(username__icontains=user_query.username)
 
-        if user_query.sex:
-            query = query.filter(sex=user_query.sex)
+        if user_query.gender:
+            query = query.filter(gender=user_query.gender)
 
         if user_query.age_min is not None:
             query = query.filter(age__gte=user_query.age_min)

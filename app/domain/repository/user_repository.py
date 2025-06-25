@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from fastapi_pagination import Params, Page
 
 from app.application.schemas.user_schema import UserUpsetCommand, UserQuery
-from app.domain.entity.UserEntity import UserEntity
+from app.domain.entity.user_entity import UserEntity
 
 class UserRepository(ABC):
 
