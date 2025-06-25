@@ -2,6 +2,7 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.tortoise import apaginate
 from tortoise import transactions
 
+from app.adapter.middleware.user_context import get_current_user
 from app.application.schemas.user_schema import UserUpsetCommand, UserQuery
 from app.domain.entity.user_entity import UserEntity
 from app.domain.repository.user_repository import UserRepository
@@ -12,7 +13,8 @@ class UserRepositoryImpl(UserRepository):
 
     @transactions.atomic()
     async def create(self, user_upset_command: UserUpsetCommand) -> UserEntity:
-        user_model = await UserModel.create(**user_upset_command.model_dump())
+        use_context = get_current_user()
+        user_model = await UserModel.create(**user_upset_command.model_dump(), created_by=use_context.id, updated_by=use_context.id)
         return UserEntity(**user_model.model_to_dict())
 
     async def read(self, user_id: int) -> UserEntity | None:
@@ -51,7 +53,8 @@ class UserRepositoryImpl(UserRepository):
         # 使用in_transaction()实现事务
         async with transactions.in_transaction():
             try:
-                await UserModel.filter(id=user_id).update(**user_upset_command.model_dump(exclude_unset=True))
+                use_context = get_current_user()
+                await UserModel.filter(id=user_id).update(**user_upset_command.model_dump(exclude_unset=True), update_by=use_context.id)
                 return await self.read(user_id)
                 # 事务会自动提交（无异常时）
             except Exception as e:

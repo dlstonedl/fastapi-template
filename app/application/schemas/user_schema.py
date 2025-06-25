@@ -18,6 +18,8 @@ class UserResponse(BaseModel):
     age: int  = Field(description="年龄")
     created_at: datetime = Field(description="创建时间")
     updated_at: datetime = Field(description="更新时间")
+    created_by: str = Field(description="创建人")
+    updated_by: str = Field(description="更新人")
 
     model_config = ConfigDict(
         from_attributes=True,

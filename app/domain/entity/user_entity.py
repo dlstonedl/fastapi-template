@@ -12,6 +12,8 @@ class UserEntity:
     age: int
     created_at: datetime
     updated_at: datetime
+    created_by: str
+    updated_by: str
 
 
 

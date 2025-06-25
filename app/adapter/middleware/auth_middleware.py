@@ -1,8 +1,12 @@
+import logging
+
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from app.adapter.middleware.user_context import current_user, UserContext
+
+logger = logging.getLogger(__name__)
 
 async def auth_middleware(request: Request, call_next: RequestResponseEndpoint) -> Response:
     # 示例：从 Header 中提取 token
@@ -15,7 +19,7 @@ async def auth_middleware(request: Request, call_next: RequestResponseEndpoint) 
     try:
         parts = token.replace("Bearer ", "").split(":")
         token_context = current_user.set(UserContext(id=int(parts[0]), username=parts[1]))
-        print(current_user.get())
+        logger.info(current_user.get())
         # 执行下一个中间件或请求处理
         return await call_next(request)
     except Exception:
@@ -24,5 +28,5 @@ async def auth_middleware(request: Request, call_next: RequestResponseEndpoint) 
         # 清理上下文变量
         if token_context:
             current_user.reset(token_context)
-        print(current_user.get())
+        logger.info(current_user.get())
 
