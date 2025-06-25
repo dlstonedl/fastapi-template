@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
+from app.infrastructure.common.logging_config import setup_logging
+
 # 加载.env环境变量，只需要在这里调用一次
 load_dotenv('.env')
 load_dotenv('.env.local', override=True)
@@ -26,7 +28,7 @@ async def lifespan(app: FastAPI):
         # 在应用关闭时关闭httpx客户端
         await HttpxClientSingleton.close()
 
-
+setup_logging()
 app = FastAPI(lifespan=lifespan)
 
 register_tortoise(app,

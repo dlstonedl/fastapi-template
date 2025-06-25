@@ -2,3 +2,4 @@
 .idea
 migrations
 .env.local
+app.log
