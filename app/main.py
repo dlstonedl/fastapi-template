@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from app.adapter.exception.exception_handler import http_exception_handler
-from app.domain.exception.exception import BusinessException
+from app.domain.exception.base_exception import BusinessException
 from app.infrastructure.common.logging_config import setup_logging
 
 # 加载.env环境变量，只需要在这里调用一次

@@ -4,7 +4,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from app.application.schemas.base_response import BaseResponse
-from app.domain.exception.exception import BusinessException
+from app.domain.exception.base_exception import BusinessException
 
 logger = logging.getLogger(__name__)
 

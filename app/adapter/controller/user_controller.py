@@ -7,7 +7,7 @@ from fastapi_pagination import Page, Params, add_pagination
 from app.application.schemas.base_response import BaseResponse
 from app.application.schemas.user_schema import UserUpsetCommand, UserResponse, UserQuery
 from app.domain.exception.error_code import ErrorCode
-from app.domain.exception.exception import BusinessException
+from app.domain.exception.base_exception import BusinessException
 from app.domain.repository.user_repository import UserRepository
 from app.infrastructure.persistence.repository.user_repository_impl import UserRepositoryImpl
 
