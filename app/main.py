@@ -1,8 +1,9 @@
 from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
+from app.adapter.exception.exception_handler import http_exception_handler
 from app.infrastructure.common.logging_config import setup_logging
 
 # 加载.env环境变量，只需要在这里调用一次
@@ -42,6 +43,9 @@ app.include_router(rest_user_controller.router)
 
 # 中间件
 app.middleware("http")(auth_middleware)
+
+# 异常处理
+app.exception_handler(HTTPException)(http_exception_handler)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
