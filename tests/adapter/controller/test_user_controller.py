@@ -34,7 +34,7 @@ def client(app):
 
 def test_create_user(client):
     # given
-    user_data = {"username": "test", "sex": "male", "age": 30}
+    user_data = {"username": "test", "gender": "MALE", "age": 30}
 
     # when
     response = client.post("/users", json=user_data)
@@ -43,13 +43,13 @@ def test_create_user(client):
     assert response.status_code == 200
     data = response.json()
     assert data["username"] == "test"
-    assert data["sex"] == "male"
+    assert data["gender"] == "MALE"
     assert data["age"] == 30
 
 
 def test_read_user(client):
     # given
-    expected_response = {"id": 3, "username": "test", "sex": "male", "age": 30}
+    expected_response = {"id": 3, "username": "test", "gender": "MALE", "age": 30}
     import asyncio
     asyncio.run(UserModel.create(**expected_response))
 
@@ -58,4 +58,7 @@ def test_read_user(client):
 
     # then
     assert response.status_code == 200
-    assert response.json() == expected_response
+    data = response.json()
+    assert data["username"] == "test"
+    assert data["gender"] == "MALE"
+    assert data["age"] == 30

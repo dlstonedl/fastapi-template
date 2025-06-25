@@ -27,8 +27,8 @@ def client(mock_repo):
 
 def test_create_user(client, mock_repo):
     # given
-    user_data = {"username": "test", "sex": "male", "age": 30}
-    expected_response = {"id": 1, "username": "test", "sex": "male", "age": 30}
+    user_data = {"username": "test", "gender": "MALE", "age": 30}
+    expected_response = {"id": 1, "username": "test", "gender": "MALE", "age": 30, "created_at": "2025-06-25T00:00:00", "updated_at": "2025-06-25T00:00:00"}
     mock_repo.create.return_value = UserEntity(**expected_response)
 
     # when
@@ -40,7 +40,7 @@ def test_create_user(client, mock_repo):
 
 def test_read_user(client, mock_repo):
     # given
-    expected_response = {"id": 1, "username": "test", "sex": "male", "age": 30}
+    expected_response = {"id": 1, "username": "test", "gender": "MALE", "age": 30, "created_at": "2025-06-25T00:00:00", "updated_at": "2025-06-25T00:00:00"}
     mock_repo.read.return_value = UserEntity(**expected_response)
 
     # when
