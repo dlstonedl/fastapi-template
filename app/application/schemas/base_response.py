@@ -5,7 +5,7 @@ T = TypeVar('T')
 
 class BaseResponse(BaseModel, Generic[T]):
     code: str = "SUC0000"
-    message: str = "success"
+    message: Optional[str] = None
     data: Optional[T] = None
 
     @classmethod

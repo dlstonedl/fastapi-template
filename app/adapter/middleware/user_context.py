@@ -16,7 +16,7 @@ current_user: ContextVar[Optional[UserContext]] = ContextVar("current_user", def
 def get_current_user() -> UserContext:
     user = current_user.get()
     if user is None:
-        raise BusinessException(ErrorCode.USER_NOT_FOUND)
+        raise BusinessException(ErrorCode.USER_CONTEXT_NOT_SET)
     return user
 
 

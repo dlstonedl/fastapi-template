@@ -1,9 +1,15 @@
+from dataclasses import asdict
+from datetime import datetime
+
 import pytest
 from fastapi import FastAPI
 from starlette.testclient import TestClient
 from tortoise import Tortoise
 
 from app.adapter.controller.user_controller import router
+from app.adapter.middleware.auth_middleware import auth_middleware
+from app.domain.entity.gender import Gender
+from app.domain.entity.user_entity import UserEntity
 from app.infrastructure.persistence.models.user_model import UserModel
 
 
@@ -26,6 +32,7 @@ def init_tortoise():
 def app():
     app = FastAPI()
     app.include_router(router)
+    app.middleware("http")(auth_middleware)
     return app
 
 @pytest.fixture
@@ -37,7 +44,8 @@ def test_create_user(client):
     user_data = {"username": "test", "gender": "MALE", "age": 30}
 
     # when
-    response = client.post("/users", json=user_data)
+    headers = {"Authorization": "Bearer 100:system"}
+    response = client.post("/users", json=user_data, headers=headers)
 
     # then
     assert response.status_code == 200
@@ -49,9 +57,12 @@ def test_create_user(client):
 
 def test_read_user(client):
     # given
-    expected_response = {"id": 3, "username": "test", "gender": "MALE", "age": 30}
+    user_entity = UserEntity(id=3, username="test", gender=Gender.MALE, age=30,
+                             created_at=datetime.fromisoformat("2025-06-25T00:00:00"),
+                             updated_at=datetime.fromisoformat("2025-06-25T00:00:00"),
+                             created_by="system", updated_by="system")
     import asyncio
-    asyncio.run(UserModel.create(**expected_response))
+    asyncio.run(UserModel.create(**asdict(user_entity)))
 
     # when
     response = client.get("/users/3")
